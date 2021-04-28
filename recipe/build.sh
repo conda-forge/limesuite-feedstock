@@ -6,9 +6,12 @@ mkdir forgebuild
 cd forgebuild
 
 # enable components explicitly so we get build error when unsatisfied
+# CMAKE_INSTALL_LIBDIR needed for soapysdr component
+# LIB_SUFFIX needed for the rest of limesuite
 cmake_config_args=(
     -DBUILD_SHARED_LIBS=ON
     -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_INSTALL_LIBDIR=lib
     -DCMAKE_INSTALL_PREFIX=$PREFIX
     -DLIB_SUFFIX=""
     -DLIME_SUITE_EXTVER="condaforge"

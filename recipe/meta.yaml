@@ -106,8 +106,8 @@ outputs:
     test:
       commands:
         # verify that libraries get installed
-        - test -f $PREFIX/lib/SoapySDR/modules0.7/libLMS7Support.so  # [not win]
-        - if not exist %PREFIX%\\Library\\lib\\SoapySDR\\modules0.7\\LMS7Support.dll exit 1  # [win]
+        - test -f $PREFIX/lib/SoapySDR/modules{{ soapysdr }}/libLMS7Support.so  # [not win]
+        - if not exist %PREFIX%\\Library\\lib\\SoapySDR\\modules{{ soapysdr }}\\LMS7Support.dll exit 1  # [win]
 
         # show info to see if module is detected
         - SoapySDRUtil --info
