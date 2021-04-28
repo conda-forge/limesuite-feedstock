@@ -12,6 +12,6 @@ pin_run_as_build:
   glew:
     max_pin: x.x
 soapysdr:
-- '0.7'
+- '0.8'
 target_platform:
 - win-64
