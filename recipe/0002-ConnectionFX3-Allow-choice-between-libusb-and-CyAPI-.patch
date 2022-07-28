@@ -1,7 +1,7 @@
-From 0f4b40f8d65a82fa460212144d24cd3a9b694305 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ryan Volz <ryan.volz@gmail.com>
 Date: Wed, 3 Mar 2021 15:54:25 -0500
-Subject: [PATCH 2/2] ConnectionFX3: Allow choice between libusb and CyAPI at
+Subject: [PATCH] ConnectionFX3: Allow choice between libusb and CyAPI at
  compile time.
 
 ---
@@ -378,5 +378,5 @@ index bfa33b68..a7879db4 100644
  	if (device.DeviceCount())
      {
 -- 
-2.25.1
+2.35.1
 

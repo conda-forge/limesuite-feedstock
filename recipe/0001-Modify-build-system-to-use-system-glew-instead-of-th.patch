@@ -1,8 +1,8 @@
-From 31feb0516bde0615a445a0ae4902fd8beed1452d Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Ryan Volz <ryan.volz@gmail.com>
 Date: Wed, 3 Mar 2021 13:39:47 -0500
-Subject: [PATCH 1/2] Modify build system to use system glew instead of the
- local copy.
+Subject: [PATCH] Modify build system to use system glew instead of the local
+ copy.
 
 ---
  src/oglGraph/CMakeLists.txt | 8 ++++----
@@ -66,5 +66,5 @@ index e10b6310..6c4302c8 100644
  #include <OpenGL/gl.h>
  #else
 -- 
-2.25.1
+2.35.1
 

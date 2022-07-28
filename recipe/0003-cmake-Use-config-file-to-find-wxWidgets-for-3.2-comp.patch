@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ryan Volz <ryan.volz@gmail.com>
+Date: Thu, 28 Jul 2022 15:47:05 -0400
+Subject: [PATCH] cmake: Use config file to find wxWidgets for 3.2
+ compatibility.
+
+wxWidgets 3.2 breaks compatibility with the findwxWidgets.cmake file
+bundled with CMake <=3.23.
+---
+ src/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 8a7f79d4..a4fc41f8 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -173,7 +173,7 @@ set(wxWidgets_USE_DEBUG OFF)
+ set(wxWidgets_USE_UNICODE ON)
+ set(wxWidgets_USE_UNIVERSAL OFF)
+ set(wxWidgets_USE_STATIC ON)
+-find_package(wxWidgets COMPONENTS richtext xml html xrc adv aui core base gl)
++find_package(wxWidgets COMPONENTS richtext xml html xrc adv aui core base gl CONFIG)
+ message(STATUS "wxWidgets_DEFINITIONS: ${wxWidgets_DEFINITIONS}")
+ message(STATUS "wxWidgets_INCLUDE_DIRS: ${wxWidgets_INCLUDE_DIRS}")
+ message(STATUS "wxWidgets_LIBRARIES: ${wxWidgets_LIBRARIES}")
+-- 
+2.35.1
+
