@@ -147,6 +147,7 @@ about:
     - COPYING
     - external/cpp-feather-ini-parser/LICENSE
     - external/kissFFT/COPYING
+    - LICENSE_FTD3XX  # [win]
   summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
   description: |
     Lime Suite is a collection of software supporting several hardware
