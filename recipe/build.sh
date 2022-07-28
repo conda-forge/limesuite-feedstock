@@ -23,6 +23,7 @@ cmake_config_args=(
     -DENABLE_EXAMPLES=OFF
     -DENABLE_FTDI=ON
     -DENABLE_FX3=ON
+    -DENABLE_GUI=ON
     -DENABLE_HEADERS=ON
     -DENABLE_LIBRARY=ON
     -DENABLE_LIMERFE=ON
@@ -41,12 +42,7 @@ cmake_config_args=(
 
 if [[ $target_platform == linux* ]] ; then
     cmake_config_args+=(
-        -DENABLE_GUI=ON
         -DUDEV_RULES_PATH=$PREFIX/lib/udev/rules.d
-    )
-else
-    cmake_config_args+=(
-        -DENABLE_GUI=OFF
     )
 fi
 

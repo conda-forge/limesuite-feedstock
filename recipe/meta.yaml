@@ -50,8 +50,7 @@ requirements:
     - glew
     - libusb
     - soapysdr
-    # wxwidgets is not available for osx, otherwise we could ENABLE_GUI
-    - wxwidgets  # [not osx]
+    - wxwidgets
 
 outputs:
   - name: liblimesuite
@@ -128,15 +127,14 @@ outputs:
         - glew
         - {{ pin_subpackage('liblimesuite', exact=True) }}
         - {{ pin_subpackage('soapysdr-module-lms7', exact=True) }}
-        # wxwidgets is not available for osx, otherwise we could ENABLE_GUI
-        - wxwidgets  # [not osx]
+        - wxwidgets
       run:
         - {{ pin_subpackage('liblimesuite', exact=True) }}
         - {{ pin_subpackage('soapysdr-module-lms7', exact=True) }}
     test:
       commands:
         # verify that GUI executables get installed
-        - test -f $PREFIX/bin/LimeSuiteGUI  # [linux]
+        - test -f $PREFIX/bin/LimeSuiteGUI  # [not win]
         - if not exist %PREFIX%\\Library\\bin\\LimeSuiteGUI.exe exit 1  # [win]
 
         # verify limesuite dependencies
