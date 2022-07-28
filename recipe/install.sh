@@ -14,8 +14,5 @@ if [[ "$PKG_NAME" != limesuite ]]; then
         rm -r $PREFIX/lib/SoapySDR/modules*
     fi
 
-    if [[ $target_platform != osx* ]] ; then
-        # remove GUI components
-        rm -r $PREFIX/bin/LimeSuiteGUI
-    fi
+    rm -r $PREFIX/bin/LimeSuiteGUI
 fi
