@@ -7,6 +7,11 @@ if errorlevel 1 exit 1
 cd forgebuild
 if errorlevel 1 exit 1
 
+:REM Need updated wxWidgets find module from the upcoming version of cmake 3.24.0
+:REM https://github.com/Kitware/CMake/commit/2a19231d618482755e9aae981a65680bb1ec1050
+cmake -E copy "%RECIPE_DIR%\FindwxWidgets.cmake" "%SRC_DIR%\cmake\Modules\"
+if errorlevel 1 exit 1
+
 :: enable gnuradio components explicitly so we get build error when unsatisfied
 cmake -G "Ninja" ^
     -DBUILD_SHARED_LIBS=ON ^
