@@ -11,7 +11,6 @@ source:
   patches:
     - 0001-Modify-build-system-to-use-system-glew-instead-of-th.patch
     - 0002-ConnectionFX3-Allow-choice-between-libusb-and-CyAPI-.patch
-    - 0003-cmake-Use-config-file-to-find-wxWidgets-for-3.2-comp.patch
 
 build:
   number: 2
