@@ -50,5 +50,5 @@ if [[ $target_platform == linux* ]] ; then
     )
 fi
 
-cmake --debug-find-pkg=wxWidgets ${CMAKE_ARGS} -G "Ninja" .. "${cmake_config_args[@]}"
+cmake ${CMAKE_ARGS} -G "Ninja" .. "${cmake_config_args[@]}"
 cmake --build . --config Release -- -j${CPU_COUNT}
