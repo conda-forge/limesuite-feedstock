@@ -26,6 +26,21 @@ contains the Soapy SDR module that supports Lime devices. The
 `limesuite` package provides the entire software suite, depending
 on the previous packages and also providing GUI tools.
 
+For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
+this package uses libusb to communicate over USB instead of the standard
+CyUSB library which is not open source. If you have used your LimeSDR
+with another software package, you will have to switch USB drivers to
+one compatible with WinUSB/libusb by installing the WinUSB driver with
+Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
+
+For Linux users of `liblimesuite`, you will likely want to link the
+provided udev rule into your system installation in order for the
+hardware to have the correct permissions:
+
+    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
+    sudo udevadm control --reload
+    sudo udevadm trigger
+
 
 Current build status
 ====================
