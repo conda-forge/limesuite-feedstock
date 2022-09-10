@@ -1,6 +1,11 @@
 setlocal EnableDelayedExpansion
 @echo on
 
+:: Need updated wxWidgets find module from the upcoming version of cmake 3.24.0
+:: https://github.com/Kitware/CMake/commit/2a19231d618482755e9aae981a65680bb1ec1050
+cmake -E copy "%RECIPE_DIR%\FindwxWidgets.cmake" "%SRC_DIR%\cmake\Modules"
+if errorlevel 1 exit 1
+
 :: Make a build folder and change to it
 mkdir forgebuild
 if errorlevel 1 exit 1

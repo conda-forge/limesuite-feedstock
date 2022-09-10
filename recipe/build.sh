@@ -2,6 +2,10 @@
 
 set -ex
 
+# Need updated wxWidgets find module from the upcoming version of cmake 3.24.0
+# https://github.com/Kitware/CMake/commit/2a19231d618482755e9aae981a65680bb1ec1050
+cmake -E copy $RECIPE_DIR/FindwxWidgets.cmake $SRC_DIR/cmake/Modules
+
 mkdir forgebuild
 cd forgebuild
 
@@ -23,6 +27,7 @@ cmake_config_args=(
     -DENABLE_EXAMPLES=OFF
     -DENABLE_FTDI=ON
     -DENABLE_FX3=ON
+    -DENABLE_GUI=ON
     -DENABLE_HEADERS=ON
     -DENABLE_LIBRARY=ON
     -DENABLE_LIMERFE=ON
@@ -41,12 +46,7 @@ cmake_config_args=(
 
 if [[ $target_platform == linux* ]] ; then
     cmake_config_args+=(
-        -DENABLE_GUI=ON
         -DUDEV_RULES_PATH=$PREFIX/lib/udev/rules.d
-    )
-else
-    cmake_config_args+=(
-        -DENABLE_GUI=OFF
     )
 fi
 

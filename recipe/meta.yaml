@@ -13,16 +13,13 @@ source:
     - 0002-ConnectionFX3-Allow-choice-between-libusb-and-CyAPI-.patch
 
 build:
-  number: 1
+  number: 2
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake
-    # libudev is on its own in CentOS 6, packaged with systemd in CentOS 7
-    - {{ cdt('libudev-devel') }}  # [linux and cdt_name=='cos6']
-    - {{ cdt('systemd-devel') }}  # [linux and cdt_name=='cos7']
     - ninja
     # required for OpenGL support
     # See https://conda-forge.org/docs/maintainer/knowledge_base.html?highlight=cdt#libgl
@@ -49,14 +46,15 @@ requirements:
     - glew
     - libusb
     - soapysdr
-    # wxwidgets is not available for osx, otherwise we could ENABLE_GUI
-    - wxwidgets  # [not osx]
+    - wxwidgets
 
 outputs:
   - name: liblimesuite
     script: install.sh  # [unix]
     script: install.bat  # [not unix]
     build:
+      # instructions for manually linking udev rules
+      post-link: post-link  # [linux]
       run_exports:
         - {{ pin_subpackage('liblimesuite', max_pin='x.x') }}
     requirements:
@@ -127,15 +125,14 @@ outputs:
         - glew
         - {{ pin_subpackage('liblimesuite', exact=True) }}
         - {{ pin_subpackage('soapysdr-module-lms7', exact=True) }}
-        # wxwidgets is not available for osx, otherwise we could ENABLE_GUI
-        - wxwidgets  # [not osx]
+        - wxwidgets
       run:
         - {{ pin_subpackage('liblimesuite', exact=True) }}
         - {{ pin_subpackage('soapysdr-module-lms7', exact=True) }}
     test:
       commands:
         # verify that GUI executables get installed
-        - test -f $PREFIX/bin/LimeSuiteGUI  # [linux]
+        - test -f $PREFIX/bin/LimeSuiteGUI  # [not win]
         - if not exist %PREFIX%\\Library\\bin\\LimeSuiteGUI.exe exit 1  # [win]
 
         # verify limesuite dependencies
@@ -151,6 +148,7 @@ about:
     - COPYING
     - external/cpp-feather-ini-parser/LICENSE
     - external/kissFFT/COPYING
+    - LICENSE_FTD3XX  # [win]
   summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
   description: |
     Lime Suite is a collection of software supporting several hardware
@@ -165,6 +163,21 @@ about:
     contains the Soapy SDR module that supports Lime devices. The
     `limesuite` package provides the entire software suite, depending
     on the previous packages and also providing GUI tools.
+
+    For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
+    this package uses libusb to communicate over USB instead of the standard
+    CyUSB library which is not open source. If you have used your LimeSDR
+    with another software package, you will have to switch USB drivers to
+    one compatible with WinUSB/libusb by installing the WinUSB driver with
+    Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
+
+    For Linux users of `liblimesuite`, you will likely want to link the
+    provided udev rule into your system installation in order for the
+    hardware to have the correct permissions:
+
+        sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
+        sudo udevadm control --reload
+        sudo udevadm trigger
   doc_url: https://wiki.myriadrf.org/Lime_Suite
   dev_url: https://github.com/myriadrf/LimeSuite
 
