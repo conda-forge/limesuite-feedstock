@@ -7,10 +7,10 @@ Subject: [PATCH] ConnectionFX3: Allow choice between libusb and CyAPI at
 ---
  cmake/Modules/Findlibusb-1.0.cmake       |  4 +--
  src/ConnectionFX3/CMakeLists.txt         | 23 ++++++++++++--
- src/ConnectionFX3/ConnectionFX3.cpp      | 38 ++++++++++++------------
+ src/ConnectionFX3/ConnectionFX3.cpp      | 40 ++++++++++++------------
  src/ConnectionFX3/ConnectionFX3.h        | 18 +++++------
- src/ConnectionFX3/ConnectionFX3Entry.cpp | 10 +++----
- 5 files changed, 56 insertions(+), 37 deletions(-)
+ src/ConnectionFX3/ConnectionFX3Entry.cpp | 10 +++---
+ 5 files changed, 57 insertions(+), 38 deletions(-)
 
 diff --git a/cmake/Modules/Findlibusb-1.0.cmake b/cmake/Modules/Findlibusb-1.0.cmake
 index 8b28d8db..7ae68f21 100644
@@ -77,10 +77,10 @@ index c33bd26e..351a4cbc 100644
  
  message(STATUS "USB_INCLUDE_DIRS: ${USB_INCLUDE_DIRS}")
 diff --git a/src/ConnectionFX3/ConnectionFX3.cpp b/src/ConnectionFX3/ConnectionFX3.cpp
-index 56ff9a94..838f9181 100644
+index 887eda64..3f8caa20 100644
 --- a/src/ConnectionFX3/ConnectionFX3.cpp
 +++ b/src/ConnectionFX3/ConnectionFX3.cpp
-@@ -56,7 +56,7 @@ ConnectionFX3::ConnectionFX3(void *arg, const std::string &vidpid, const std::st
+@@ -57,7 +57,7 @@ ConnectionFX3::ConnectionFX3(void *arg, const std::string &vidpid, const std::st
      bulkCtrlAvailable = false;
      bulkCtrlInProgress = false;
      isConnected = false;
@@ -89,7 +89,7 @@ index 56ff9a94..838f9181 100644
      if(arg == nullptr)
          USBDevicePrimary = new CCyFX3Device();
      else
-@@ -113,7 +113,7 @@ ConnectionFX3::ConnectionFX3(void *arg, const std::string &vidpid, const std::st
+@@ -114,7 +114,7 @@ ConnectionFX3::ConnectionFX3(void *arg, const std::string &vidpid, const std::st
  ConnectionFX3::~ConnectionFX3()
  {
      Close();
@@ -98,25 +98,34 @@ index 56ff9a94..838f9181 100644
      delete USBDevicePrimary;
  #endif
  }
-@@ -124,7 +124,7 @@ ConnectionFX3::~ConnectionFX3()
- int ConnectionFX3::Open(const std::string &vidpid, const std::string &serial, const unsigned index)
+@@ -126,7 +126,7 @@ int ConnectionFX3::Open(const std::string &vidpid, const std::string &serial, co
  {
+     Close();
      bulkCtrlAvailable = false;
 -#ifndef __unix__
 +#ifdef CYAPI_ENABLED
      if(index > USBDevicePrimary->DeviceCount())
          return ReportError(ERANGE, "ConnectionSTREAM: Device index out of range");
  
-@@ -279,7 +279,7 @@ int ConnectionFX3::Open(const std::string &vidpid, const std::string &serial, co
+@@ -283,7 +283,7 @@ int ConnectionFX3::Open(const std::string &vidpid, const std::string &serial, co
  */
  void ConnectionFX3::Close()
  {
+-#ifdef __unix__
++#ifdef LIBUSB_ENABLED
+     const libusb_version* ver = libusb_get_version();
+     // Fix #358 libusb crash when freeing transfers(never used ones) without valid device handle. Bug in libusb 1.0.25 https://github.com/libusb/libusb/issues/1059
+     const bool isBuggy_libusb_free_transfer = ver->major==1 && ver->minor==0 && ver->micro == 25;
+@@ -309,7 +309,7 @@ void ConnectionFX3::Close()
+         contextsToSend = nullptr;
+     }
+ 
 -    #ifndef __unix__
 +    #ifdef CYAPI_ENABLED
      USBDevicePrimary->Close();
      for (int i = 0; i < MAX_EP_CNT; i++)
          InEndPt[i] = OutEndPt[i] = nullptr;
-@@ -311,7 +311,7 @@ void ConnectionFX3::Close()
+@@ -341,7 +341,7 @@ void ConnectionFX3::Close()
  */
  bool ConnectionFX3::IsOpen()
  {
@@ -125,7 +134,7 @@ index 56ff9a94..838f9181 100644
      return USBDevicePrimary->IsOpen() && isConnected;
      #else
      return isConnected;
-@@ -334,7 +334,7 @@ int ConnectionFX3::Write(const unsigned char *buffer, const int length, int time
+@@ -364,7 +364,7 @@ int ConnectionFX3::Write(const unsigned char *buffer, const int length, int time
      unsigned char* wbuffer = new unsigned char[length];
      memcpy(wbuffer, buffer, length);
      bulkCtrlInProgress = false;
@@ -134,7 +143,7 @@ index 56ff9a94..838f9181 100644
      if(bulkCtrlAvailable
          && commandsToBulkCtrl.find(buffer[0]) != commandsToBulkCtrl.end())
      {
-@@ -375,7 +375,7 @@ int ConnectionFX3::Read(unsigned char *buffer, const int length, int timeout_ms)
+@@ -405,7 +405,7 @@ int ConnectionFX3::Read(unsigned char *buffer, const int length, int timeout_ms)
      if(IsOpen() == false)
          return 0;
  
@@ -143,7 +152,7 @@ index 56ff9a94..838f9181 100644
      if(bulkCtrlAvailable && bulkCtrlInProgress)
      {
          InCtrlBulkEndPt->XferData(buffer, len);
-@@ -403,7 +403,7 @@ int ConnectionFX3::Read(unsigned char *buffer, const int length, int timeout_ms)
+@@ -433,7 +433,7 @@ int ConnectionFX3::Read(unsigned char *buffer, const int length, int timeout_ms)
      return len;
  }
  
@@ -152,7 +161,7 @@ index 56ff9a94..838f9181 100644
  /**	@brief Function for handling libusb callbacks
  */
  void callback_libusbtransfer(libusb_transfer *trans)
-@@ -471,7 +471,7 @@ int ConnectionFX3::BeginDataReading(char *buffer, uint32_t length, int ep)
+@@ -501,7 +501,7 @@ int ConnectionFX3::BeginDataReading(char *buffer, uint32_t length, int ep)
          return -1;
      }
      contexts[i].used = true;
@@ -161,7 +170,7 @@ index 56ff9a94..838f9181 100644
      if (InEndPt[streamBulkInAddr & 0xF])
      {
          contexts[i].EndPt = InEndPt[streamBulkInAddr & 0xF];
-@@ -504,7 +504,7 @@ bool ConnectionFX3::WaitForReading(int contextHandle, unsigned int timeout_ms)
+@@ -534,7 +534,7 @@ bool ConnectionFX3::WaitForReading(int contextHandle, unsigned int timeout_ms)
  {
      if(contextHandle >= 0 && contexts[contextHandle].used == true)
      {
@@ -170,7 +179,7 @@ index 56ff9a94..838f9181 100644
      int status = 0;
      status = contexts[contextHandle].EndPt->WaitForXfer(contexts[contextHandle].inOvLap, timeout_ms);
  	return status;
-@@ -528,7 +528,7 @@ int ConnectionFX3::FinishDataReading(char *buffer, uint32_t length, int contextH
+@@ -558,7 +558,7 @@ int ConnectionFX3::FinishDataReading(char *buffer, uint32_t length, int contextH
  {
      if(contextHandle >= 0 && contexts[contextHandle].used == true)
      {
@@ -179,7 +188,7 @@ index 56ff9a94..838f9181 100644
      int status = 0;
      long len = length;
      status = contexts[contextHandle].EndPt->FinishDataXfer((unsigned char*)buffer, len, contexts[contextHandle].inOvLap, contexts[contextHandle].context);
-@@ -551,7 +551,7 @@ int ConnectionFX3::FinishDataReading(char *buffer, uint32_t length, int contextH
+@@ -581,7 +581,7 @@ int ConnectionFX3::FinishDataReading(char *buffer, uint32_t length, int contextH
  */
  void ConnectionFX3::AbortReading(int ep)
  {
@@ -188,7 +197,7 @@ index 56ff9a94..838f9181 100644
      for (int i = 0; i < MAX_EP_CNT; i++)
          if (InEndPt[i] && InEndPt[i]->Address == 0x81)
  	        InEndPt[i]->Abort();
-@@ -596,7 +596,7 @@ int ConnectionFX3::BeginDataSending(const char *buffer, uint32_t length, int ep)
+@@ -626,7 +626,7 @@ int ConnectionFX3::BeginDataSending(const char *buffer, uint32_t length, int ep)
      if(!contextFound)
          return -1;
      contextsToSend[i].used = true;
@@ -197,7 +206,7 @@ index 56ff9a94..838f9181 100644
      if (OutEndPt[streamBulkOutAddr])
      {
          contextsToSend[i].EndPt = OutEndPt[streamBulkOutAddr];
-@@ -629,7 +629,7 @@ bool ConnectionFX3::WaitForSending(int contextHandle, unsigned int timeout_ms)
+@@ -659,7 +659,7 @@ bool ConnectionFX3::WaitForSending(int contextHandle, unsigned int timeout_ms)
  {
      if(contextHandle >= 0 && contextsToSend[contextHandle].used == true )
      {
@@ -206,7 +215,7 @@ index 56ff9a94..838f9181 100644
  	int status = 0;
  	status = contextsToSend[contextHandle].EndPt->WaitForXfer(contextsToSend[contextHandle].inOvLap, timeout_ms);
  	return status;
-@@ -653,7 +653,7 @@ int ConnectionFX3::FinishDataSending(const char *buffer, uint32_t length, int co
+@@ -683,7 +683,7 @@ int ConnectionFX3::FinishDataSending(const char *buffer, uint32_t length, int co
  {
      if(contextHandle >= 0 && contextsToSend[contextHandle].used == true)
      {
@@ -215,7 +224,7 @@ index 56ff9a94..838f9181 100644
          long len = length;
          contextsToSend[contextHandle].EndPt->FinishDataXfer((unsigned char*)buffer, len, contextsToSend[contextHandle].inOvLap, contextsToSend[contextHandle].context);
          contextsToSend[contextHandle].used = false;
-@@ -675,7 +675,7 @@ int ConnectionFX3::FinishDataSending(const char *buffer, uint32_t length, int co
+@@ -705,7 +705,7 @@ int ConnectionFX3::FinishDataSending(const char *buffer, uint32_t length, int co
  */
  void ConnectionFX3::AbortSending(int ep)
  {
@@ -224,7 +233,7 @@ index 56ff9a94..838f9181 100644
      for (int i = 0; i < MAX_EP_CNT; i++)
          if (OutEndPt[i] && OutEndPt[i]->Address == 0x01)
              OutEndPt[i]->Abort();
-@@ -728,7 +728,7 @@ int ConnectionFX3::ProgramWrite(const char *buffer, const size_t length, const i
+@@ -758,7 +758,7 @@ int ConnectionFX3::ProgramWrite(const char *buffer, const size_t length, const i
  {
      if (device == LMS64CProtocol::FX3 && programmingMode == 1)
      {
@@ -233,7 +242,7 @@ index 56ff9a94..838f9181 100644
          libusb_device_descriptor desc;
          int ret = libusb_get_device_descriptor(libusb_get_device(dev_handle), &desc);
          if(ret<0)
-@@ -738,7 +738,7 @@ int ConnectionFX3::ProgramWrite(const char *buffer, const size_t length, const i
+@@ -768,7 +768,7 @@ int ConnectionFX3::ProgramWrite(const char *buffer, const size_t length, const i
          if (USBDevicePrimary->ProductID == 243)
  #endif
          {
@@ -242,7 +251,7 @@ index 56ff9a94..838f9181 100644
              return fx3_usbboot_download((unsigned char*)buffer,length);
  #else
              char* filename = "fx3fw_image_tmp.img";
-@@ -785,7 +785,7 @@ int ConnectionFX3::ResetStreamBuffers()
+@@ -815,7 +815,7 @@ int ConnectionFX3::ResetStreamBuffers()
      return TransferPacket(ctrPkt);
  }
  
@@ -252,7 +261,7 @@ index 56ff9a94..838f9181 100644
  #define MAX_FWIMG_SIZE  (512 * 1024)		// Maximum size of the firmware binary.
  #define GET_LSW(v)	((unsigned short)((v) & 0xFFFF))
 diff --git a/src/ConnectionFX3/ConnectionFX3.h b/src/ConnectionFX3/ConnectionFX3.h
-index 98fa9562..a139a2c1 100644
+index 750773ee..c96f2e65 100644
 --- a/src/ConnectionFX3/ConnectionFX3.h
 +++ b/src/ConnectionFX3/ConnectionFX3.h
 @@ -16,7 +16,7 @@
@@ -309,8 +318,8 @@ index 98fa9562..a139a2c1 100644
      static const int USB_MAX_CONTEXTS = 16; //maximum number of contexts for asynchronous transfers
 -    
 +
-     USBTransferContext contexts[USB_MAX_CONTEXTS];
-     USBTransferContext contextsToSend[USB_MAX_CONTEXTS];
+     USBTransferContext* contexts;
+     USBTransferContext* contextsToSend;
  
      bool isConnected;
  
@@ -319,7 +328,7 @@ index 98fa9562..a139a2c1 100644
      static const int MAX_EP_CNT = 16;
      CCyFX3Device* USBDevicePrimary;
      //control endpoints
-@@ -162,7 +162,7 @@ public:
+@@ -163,7 +163,7 @@ public:
      std::vector<ConnectionHandle> enumerate(const ConnectionHandle& hint);
      IConnection* make(const ConnectionHandle& handle);
  protected:
@@ -329,7 +338,7 @@ index 98fa9562..a139a2c1 100644
  #else
      libusb_context* ctx; //a libusb session
 diff --git a/src/ConnectionFX3/ConnectionFX3Entry.cpp b/src/ConnectionFX3/ConnectionFX3Entry.cpp
-index bfa33b68..a7879db4 100644
+index 985db5ab..db0d45e0 100644
 --- a/src/ConnectionFX3/ConnectionFX3Entry.cpp
 +++ b/src/ConnectionFX3/ConnectionFX3Entry.cpp
 @@ -10,7 +10,7 @@
@@ -350,7 +359,7 @@ index bfa33b68..a7879db4 100644
  
  //! make a static-initialized entry in the registry
  void __loadConnectionFX3Entry(void) //TODO fixme replace with LoadLibrary/dlopen
-@@ -33,7 +33,7 @@ static ConnectionFX3Entry FX3Entry;
+@@ -51,7 +51,7 @@ ConnectionFX3Entry::ConnectionFX3Entry(const char* connectionName):
  ConnectionFX3Entry::ConnectionFX3Entry(void):
      ConnectionRegistryEntry("FX3")
  {
@@ -359,7 +368,7 @@ index bfa33b68..a7879db4 100644
      int r = libusb_init(&ctx); //initialize the library for the session we just declared
      if(r < 0)
          lime::error("Init Error %i", r); //there was an error
-@@ -50,7 +50,7 @@ ConnectionFX3Entry::ConnectionFX3Entry(void):
+@@ -68,7 +68,7 @@ ConnectionFX3Entry::ConnectionFX3Entry(void):
  
  ConnectionFX3Entry::~ConnectionFX3Entry(void)
  {
@@ -368,7 +377,7 @@ index bfa33b68..a7879db4 100644
      mProcessUSBEvents.store(false);
      mUSBProcessingThread.join();
      libusb_exit(ctx);
-@@ -61,7 +61,7 @@ std::vector<ConnectionHandle> ConnectionFX3Entry::enumerate(const ConnectionHand
+@@ -79,7 +79,7 @@ std::vector<ConnectionHandle> ConnectionFX3Entry::enumerate(const ConnectionHand
  {
      std::vector<ConnectionHandle> handles;
  

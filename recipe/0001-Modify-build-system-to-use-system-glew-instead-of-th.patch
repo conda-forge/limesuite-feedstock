@@ -11,10 +11,10 @@ Subject: [PATCH] Modify build system to use system glew instead of the local
  3 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/src/oglGraph/CMakeLists.txt b/src/oglGraph/CMakeLists.txt
-index 65e8c6a4..b2ea6141 100644
+index 1352bc17..46c90399 100644
 --- a/src/oglGraph/CMakeLists.txt
 +++ b/src/oglGraph/CMakeLists.txt
-@@ -2,20 +2,20 @@ set(oglGraph_src_files
+@@ -2,17 +2,15 @@ set(oglGraph_src_files
  	dlgMarkers.cpp
  	GLFont.cpp
  	OpenGLGraph.cpp
@@ -32,7 +32,11 @@ index 65e8c6a4..b2ea6141 100644
  
 -ADD_DEFINITIONS(-DGLEW_STATIC)
  add_library(oglGraph STATIC ${oglGraph_src_files})
- target_include_directories(oglGraph PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+ 
+ set(OpenGL_GL_PREFERENCE GLVND)
+@@ -31,6 +29,8 @@ target_include_directories(oglGraph PUBLIC
+     ${OPENGL_INCLUDE_DIR}
+ )
  
 +target_link_libraries(oglGraph GLEW::glew)
 +
