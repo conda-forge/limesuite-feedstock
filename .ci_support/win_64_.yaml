@@ -8,9 +8,6 @@ cxx_compiler:
 - vs2019
 glew:
 - '2.1'
-pin_run_as_build:
-  glew:
-    max_pin: x.x
 soapysdr:
 - '0.8'
 target_platform:
