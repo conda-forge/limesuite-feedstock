@@ -1,5 +1,5 @@
 {% set name = "LimeSuite" %}
-{% set version = "22.09.0" %}
+{% set version = "22.09.1" %}
 
 package:
   name: {{ name|lower }}-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/myriadrf/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: 521e45298e1ffd0fd65006598e1edf37bd92a13667afaab262582fc681f1cf16
+  sha256: a90e112004bcf2b3eec1ab80321bc345824aaceff00e31ca5e2b8e8ac35ecd26
   patches:
     - 0001-Modify-build-system-to-use-system-glew-instead-of-th.patch
     - 0002-ConnectionFX3-Allow-choice-between-libusb-and-CyAPI-.patch

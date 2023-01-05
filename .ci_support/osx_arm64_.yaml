@@ -16,9 +16,6 @@ glew:
 - '2.1'
 macos_machine:
 - arm64-apple-darwin20.0.0
-pin_run_as_build:
-  glew:
-    max_pin: x.x
 soapysdr:
 - '0.8'
 target_platform:
