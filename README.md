@@ -1,11 +1,141 @@
+About limesuite-feedstock
+=========================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/limesuite-feedstock/blob/main/LICENSE.txt)
+
+
 About limesuite
-===============
+---------------
 
 Home: http://wiki.myriadrf.org/Lime_Suite
 
 Package license: Apache-2.0 AND MIT AND BSD-3-Clause
 
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/limesuite-feedstock/blob/main/LICENSE.txt)
+Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
+
+Development: https://github.com/myriadrf/LimeSuite
+
+Documentation: https://wiki.myriadrf.org/Lime_Suite
+
+Lime Suite is a collection of software supporting several hardware
+platforms including the LimeSDR, drivers for the LMS7002M transceiver
+RFIC, and other tools for developing with LMS7-based hardware.
+Installing the Lime Suite enables many SDR applications such as GQRX
+to work with supported hardware through the bundled SoapySDR support
+module.
+
+The `liblimesuite` package contains the main library that other
+packages should develop against. The `soapysdr-module-lms7` package
+contains the Soapy SDR module that supports Lime devices. The
+`limesuite` package provides the entire software suite, depending
+on the previous packages and also providing GUI tools.
+
+For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
+this package uses libusb to communicate over USB instead of the standard
+CyUSB library which is not open source. If you have used your LimeSDR
+with another software package, you will have to switch USB drivers to
+one compatible with WinUSB/libusb by installing the WinUSB driver with
+Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
+
+For Linux users of `liblimesuite`, you will likely want to link the
+provided udev rule into your system installation in order for the
+hardware to have the correct permissions:
+
+    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
+    sudo udevadm control --reload
+    sudo udevadm trigger
+
+
+About liblimesuite
+------------------
+
+Home: http://wiki.myriadrf.org/Lime_Suite
+
+Package license: Apache-2.0 AND MIT AND BSD-3-Clause
+
+Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
+
+Development: https://github.com/myriadrf/LimeSuite
+
+Documentation: https://wiki.myriadrf.org/Lime_Suite
+
+Lime Suite is a collection of software supporting several hardware
+platforms including the LimeSDR, drivers for the LMS7002M transceiver
+RFIC, and other tools for developing with LMS7-based hardware.
+Installing the Lime Suite enables many SDR applications such as GQRX
+to work with supported hardware through the bundled SoapySDR support
+module.
+
+The `liblimesuite` package contains the main library that other
+packages should develop against. The `soapysdr-module-lms7` package
+contains the Soapy SDR module that supports Lime devices. The
+`limesuite` package provides the entire software suite, depending
+on the previous packages and also providing GUI tools.
+
+For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
+this package uses libusb to communicate over USB instead of the standard
+CyUSB library which is not open source. If you have used your LimeSDR
+with another software package, you will have to switch USB drivers to
+one compatible with WinUSB/libusb by installing the WinUSB driver with
+Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
+
+For Linux users of `liblimesuite`, you will likely want to link the
+provided udev rule into your system installation in order for the
+hardware to have the correct permissions:
+
+    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
+    sudo udevadm control --reload
+    sudo udevadm trigger
+
+
+About soapysdr-module-lms7
+--------------------------
+
+Home: http://wiki.myriadrf.org/Lime_Suite
+
+Package license: Apache-2.0 AND MIT AND BSD-3-Clause
+
+Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
+
+Development: https://github.com/myriadrf/LimeSuite
+
+Documentation: https://wiki.myriadrf.org/Lime_Suite
+
+Lime Suite is a collection of software supporting several hardware
+platforms including the LimeSDR, drivers for the LMS7002M transceiver
+RFIC, and other tools for developing with LMS7-based hardware.
+Installing the Lime Suite enables many SDR applications such as GQRX
+to work with supported hardware through the bundled SoapySDR support
+module.
+
+The `liblimesuite` package contains the main library that other
+packages should develop against. The `soapysdr-module-lms7` package
+contains the Soapy SDR module that supports Lime devices. The
+`limesuite` package provides the entire software suite, depending
+on the previous packages and also providing GUI tools.
+
+For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
+this package uses libusb to communicate over USB instead of the standard
+CyUSB library which is not open source. If you have used your LimeSDR
+with another software package, you will have to switch USB drivers to
+one compatible with WinUSB/libusb by installing the WinUSB driver with
+Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
+
+For Linux users of `liblimesuite`, you will likely want to link the
+provided udev rule into your system installation in order for the
+hardware to have the correct permissions:
+
+    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
+    sudo udevadm control --reload
+    sudo udevadm trigger
+
+
+About limesuite
+---------------
+
+Home: http://wiki.myriadrf.org/Lime_Suite
+
+Package license: Apache-2.0 AND MIT AND BSD-3-Clause
 
 Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
 
