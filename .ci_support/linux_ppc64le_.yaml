@@ -25,7 +25,7 @@ soapysdr:
 target_platform:
 - linux-ppc64le
 wxwidgets:
-- 3.2.6
+- 3.2.7
 zip_keys:
 - - c_compiler_version
   - cxx_compiler_version
