@@ -15,4 +15,4 @@ soapysdr:
 target_platform:
 - win-64
 wxwidgets:
-- 3.2.6
+- 3.2.7
