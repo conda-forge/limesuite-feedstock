@@ -1,5 +1,5 @@
 c_compiler:
-- vs2019
+- vs2022
 c_stdlib:
 - vs
 channel_sources:
@@ -7,12 +7,12 @@ channel_sources:
 channel_targets:
 - conda-forge main
 cxx_compiler:
-- vs2019
+- vs2022
 glew:
-- '2.1'
+- '2.3'
 soapysdr:
 - '0.8'
 target_platform:
 - win-64
 wxwidgets:
-- 3.2.7
+- 3.3.1
