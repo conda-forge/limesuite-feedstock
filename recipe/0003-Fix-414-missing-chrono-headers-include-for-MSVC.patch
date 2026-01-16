@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ricardas Jonaitis <richard.jonaitis@gmail.com>
+Date: Fri, 7 Mar 2025 12:05:00 +0200
+Subject: [PATCH] Fix #414 missing chrono headers include for MSVC
+
+---
+ src/FPGA_common/FPGA_common.cpp | 1 +
+ src/lms7002m_mcu/MCU_BD.cpp     | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/FPGA_common/FPGA_common.cpp b/src/FPGA_common/FPGA_common.cpp
+index 4e81f33e..31c2d37f 100644
+--- a/src/FPGA_common/FPGA_common.cpp
++++ b/src/FPGA_common/FPGA_common.cpp
+@@ -2,6 +2,7 @@
+ #include "IConnection.h"
+ #include "LMS64CProtocol.h"
+ #include <ciso646>
++#include <chrono>
+ #include <vector>
+ #include <map>
+ #include <math.h>
+diff --git a/src/lms7002m_mcu/MCU_BD.cpp b/src/lms7002m_mcu/MCU_BD.cpp
+index 7ec42509..7d730d76 100644
+--- a/src/lms7002m_mcu/MCU_BD.cpp
++++ b/src/lms7002m_mcu/MCU_BD.cpp
+@@ -6,6 +6,7 @@
+ 
+ #include "MCU_BD.h"
+ using namespace std;
++#include <chrono>
+ #include <string>
+ #include "MCU_File.h"
+ #include <sstream>
+-- 
+2.34.1
+
