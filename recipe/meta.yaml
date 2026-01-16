@@ -11,9 +11,11 @@ source:
   patches:
     - 0001-Modify-build-system-to-use-system-glew-instead-of-th.patch
     - 0002-ConnectionFX3-Allow-choice-between-libusb-and-CyAPI-.patch
+    - 0003-Fix-414-missing-chrono-headers-include-for-MSVC.patch
+    - 0004-Add-more-missing-MSVC-chrono-include.patch
 
 build:
-  number: 2
+  number: 3
 
 requirements:
   build:
@@ -22,30 +24,12 @@ requirements:
     - {{ compiler('cxx') }}
     - cmake
     - ninja
-    # required for OpenGL support
-    # See https://conda-forge.org/docs/maintainer/knowledge_base.html?highlight=cdt#libgl
-    - {{ cdt('mesa-libgl-devel') }}  # [linux]
-    - {{ cdt('mesa-dri-drivers') }}  # [linux]
-    - {{ cdt('libdrm-devel') }}  # [linux]
-    - {{ cdt('libselinux') }}  # [linux]
-    - {{ cdt('libxxf86vm-devel') }}  # [linux]
-    # required for linking with gtk3 (through wxwidgets)
-    - {{ cdt('libx11') }}  # [linux]
-    - {{ cdt('libxau') }}  # [linux]
-    - {{ cdt('libxcomposite') }}  # [linux]
-    - {{ cdt('libxcursor') }}  # [linux]
-    - {{ cdt('libxdamage') }}  # [linux]
-    - {{ cdt('libxext') }}  # [linux]
-    - {{ cdt('libxfixes') }}  # [linux]
-    - {{ cdt('libxi') }}  # [linux]
-    - {{ cdt('libxinerama') }}  # [linux]
-    - {{ cdt('libxrandr') }}  # [linux]
-    - {{ cdt('libxrender') }}  # [linux]
-    # required for linking with wxwidgets
-    - {{ cdt('libxtst') }}  # [linux]
   host:
     - glew
     - libusb
+    # required for OpenGL support
+    # See https://conda-forge.org/docs/maintainer/knowledge_base/#libgl
+    - libgl-devel  # [linux]
     - soapysdr
     - wxwidgets
 
@@ -124,10 +108,10 @@ outputs:
         - {{ compiler('cxx') }}
         - cmake
         - ninja
-        - {{ cdt('mesa-libgl-devel') }}  # [linux]
       host:
         - glew
         - {{ pin_subpackage('liblimesuite', exact=True) }}
+        - libgl-devel  # [linux]
         - {{ pin_subpackage('soapysdr-module-lms7', exact=True) }}
         - wxwidgets
       run:
