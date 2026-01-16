@@ -12,6 +12,7 @@ source:
     - 0001-Modify-build-system-to-use-system-glew-instead-of-th.patch
     - 0002-ConnectionFX3-Allow-choice-between-libusb-and-CyAPI-.patch
     - 0003-Fix-414-missing-chrono-headers-include-for-MSVC.patch
+    - 0004-Add-more-missing-MSVC-chrono-include.patch
 
 build:
   number: 3

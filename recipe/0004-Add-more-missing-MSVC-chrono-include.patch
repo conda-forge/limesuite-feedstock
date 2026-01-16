@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Ricardas Jonaitis <richard.jonaitis@gmail.com>
+Date: Fri, 7 Mar 2025 12:21:51 +0200
+Subject: [PATCH] Add more missing MSVC chrono include
+
+---
+ src/protocols/fifo.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/protocols/fifo.h b/src/protocols/fifo.h
+index f811558b..5bc9d75a 100644
+--- a/src/protocols/fifo.h
++++ b/src/protocols/fifo.h
+@@ -4,6 +4,7 @@
+ #include <mutex>
+ #include <condition_variable>
+ #include <atomic>
++#include <chrono>
+ #include <vector>
+ #include <thread>
+ #include <queue>
+-- 
+2.34.1
+
