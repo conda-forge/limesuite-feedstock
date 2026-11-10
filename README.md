@@ -3,136 +3,6 @@ About limesuite-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/limesuite-feedstock/blob/main/LICENSE.txt)
 
-
-About limesuite
----------------
-
-Home: http://wiki.myriadrf.org/Lime_Suite
-
-Package license: Apache-2.0 AND MIT AND BSD-3-Clause
-
-Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
-
-Development: https://github.com/myriadrf/LimeSuite
-
-Documentation: https://wiki.myriadrf.org/Lime_Suite
-
-Lime Suite is a collection of software supporting several hardware
-platforms including the LimeSDR, drivers for the LMS7002M transceiver
-RFIC, and other tools for developing with LMS7-based hardware.
-Installing the Lime Suite enables many SDR applications such as GQRX
-to work with supported hardware through the bundled SoapySDR support
-module.
-
-The `liblimesuite` package contains the main library that other
-packages should develop against. The `soapysdr-module-lms7` package
-contains the Soapy SDR module that supports Lime devices. The
-`limesuite` package provides the entire software suite, depending
-on the previous packages and also providing GUI tools.
-
-For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
-this package uses libusb to communicate over USB instead of the standard
-CyUSB library which is not open source. If you have used your LimeSDR
-with another software package, you will have to switch USB drivers to
-one compatible with WinUSB/libusb by installing the WinUSB driver with
-Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
-
-For Linux users of `liblimesuite`, you will likely want to link the
-provided udev rule into your system installation in order for the
-hardware to have the correct permissions:
-
-    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
-    sudo udevadm control --reload
-    sudo udevadm trigger
-
-
-About liblimesuite
-------------------
-
-Home: http://wiki.myriadrf.org/Lime_Suite
-
-Package license: Apache-2.0 AND MIT AND BSD-3-Clause
-
-Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
-
-Development: https://github.com/myriadrf/LimeSuite
-
-Documentation: https://wiki.myriadrf.org/Lime_Suite
-
-Lime Suite is a collection of software supporting several hardware
-platforms including the LimeSDR, drivers for the LMS7002M transceiver
-RFIC, and other tools for developing with LMS7-based hardware.
-Installing the Lime Suite enables many SDR applications such as GQRX
-to work with supported hardware through the bundled SoapySDR support
-module.
-
-The `liblimesuite` package contains the main library that other
-packages should develop against. The `soapysdr-module-lms7` package
-contains the Soapy SDR module that supports Lime devices. The
-`limesuite` package provides the entire software suite, depending
-on the previous packages and also providing GUI tools.
-
-For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
-this package uses libusb to communicate over USB instead of the standard
-CyUSB library which is not open source. If you have used your LimeSDR
-with another software package, you will have to switch USB drivers to
-one compatible with WinUSB/libusb by installing the WinUSB driver with
-Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
-
-For Linux users of `liblimesuite`, you will likely want to link the
-provided udev rule into your system installation in order for the
-hardware to have the correct permissions:
-
-    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
-    sudo udevadm control --reload
-    sudo udevadm trigger
-
-
-About limesuite
----------------
-
-Home: http://wiki.myriadrf.org/Lime_Suite
-
-Package license: Apache-2.0 AND MIT AND BSD-3-Clause
-
-Summary: Driver and GUI for LMS7002M-based (Lime) SDR platforms
-
-Development: https://github.com/myriadrf/LimeSuite
-
-Documentation: https://wiki.myriadrf.org/Lime_Suite
-
-Lime Suite is a collection of software supporting several hardware
-platforms including the LimeSDR, drivers for the LMS7002M transceiver
-RFIC, and other tools for developing with LMS7-based hardware.
-Installing the Lime Suite enables many SDR applications such as GQRX
-to work with supported hardware through the bundled SoapySDR support
-module.
-
-The `liblimesuite` package contains the main library that other
-packages should develop against. The `soapysdr-module-lms7` package
-contains the Soapy SDR module that supports Lime devices. The
-`limesuite` package provides the entire software suite, depending
-on the previous packages and also providing GUI tools.
-
-For Windows users of `liblimesuite` with a LimeSDR (not mini!) device,
-this package uses libusb to communicate over USB instead of the standard
-CyUSB library which is not open source. If you have used your LimeSDR
-with another software package, you will have to switch USB drivers to
-one compatible with WinUSB/libusb by installing the WinUSB driver with
-Zadig (https://zadig.akeo.ie/) and selecting your Lime device.
-
-For Linux users of `liblimesuite`, you will likely want to link the
-provided udev rule into your system installation in order for the
-hardware to have the correct permissions:
-
-    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/64-limesuite.rules /etc/udev/rules.d/
-    sudo udevadm control --reload
-    sudo udevadm trigger
-
-
-About soapysdr-module-lms7
---------------------------
-
 Home: http://wiki.myriadrf.org/Lime_Suite
 
 Package license: Apache-2.0 AND MIT AND BSD-3-Clause
@@ -204,10 +74,10 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>win_64</td>
+              <td>osx_arm64</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=12119&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/limesuite-feedstock?branchName=main&jobName=win&configuration=win%20win_64_" alt="variant">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/limesuite-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_" alt="variant">
                 </a>
               </td>
             </tr>
@@ -237,31 +107,73 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `liblimesuite, limesuite, soapysdr-module-lms7` can be installed with `conda`:
+How to use
+----------
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda install liblimesuite limesuite soapysdr-module-lms7
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba install liblimesuite limesuite soapysdr-module-lms7
 ```
 
-It is possible to list all of the versions of `liblimesuite` available on your platform with `conda`:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+# for adding to your local project
+pixi add liblimesuite limesuite soapysdr-module-lms7
+# for installing globally
+pixi global install liblimesuite limesuite soapysdr-module-lms7
+```
+
+</details>
+
+Search package versions
+-----------------------
+
+It is possible to list all of the versions of `liblimesuite` available on your platform:
+
+<details>
+<summary>With conda</summary>
 
 ```
 conda search liblimesuite --channel conda-forge
 ```
 
-or with `mamba`:
+</details>
+
+<details>
+<summary>With mamba</summary>
 
 ```
 mamba search liblimesuite --channel conda-forge
 ```
 
-Alternatively, `mamba repoquery` may provide more information:
+</details>
+
+<details>
+<summary>With pixi</summary>
+
+```
+pixi search liblimesuite --channel conda-forge
+```
+
+</details>
+
+<details>
+<summary>With mamba repoquery, which may provide more information</summary>
 
 ```
 # Search all versions available on your platform:
@@ -273,6 +185,9 @@ mamba repoquery whoneeds liblimesuite --channel conda-forge
 # List dependencies of `liblimesuite`:
 mamba repoquery depends liblimesuite --channel conda-forge
 ```
+
+</details>
+
 
 
 About conda-forge
@@ -289,9 +204,7 @@ for each of the installable packages. Such a repository is known as a *feedstock
 A feedstock is made up of a conda recipe (the instructions on what and how to build
 the package) and the necessary configurations for automatic building using freely
 available continuous integration services. Thanks to the awesome service provided by
-[Azure](https://azure.microsoft.com/en-us/services/devops/), [GitHub](https://github.com/),
-[CircleCI](https://circleci.com/), [AppVeyor](https://www.appveyor.com/),
-[Drone](https://cloud.drone.io/welcome), and [TravisCI](https://travis-ci.com/)
+[Azure](https://azure.microsoft.com/en-us/services/devops/) and [GitHub](https://github.com/)
 it is possible to build and upload installable packages to the
 [conda-forge](https://anaconda.org/conda-forge) [anaconda.org](https://anaconda.org/)
 channel for Linux, Windows and OSX respectively.
