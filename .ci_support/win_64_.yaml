@@ -11,8 +11,8 @@ cxx_compiler:
 glew:
 - '2.3'
 soapysdr:
-- '0.8'
+- '0.9'
 target_platform:
 - win-64
 wxwidgets:
-- 3.3.3
+- 3.3.4
